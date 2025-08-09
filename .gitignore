@@ -1,0 +1,51 @@
+# Gradle Build System
+build/
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+
+# Java Compiled Classes  
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+# IDE Files (IntelliJ IDEA)
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Operating System
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Spring Boot
+*.log
+*.log.*
+log/
+logs/
+
+# Banking Data (Security)
+/data/
+/uploads/
+/exports/
+*.csv
+*.pdf
+*.mt940
+*.camt
+
+# Application Properties with Secrets
+application-local.properties
+application-prod.properties
+
+# Temporary Files
+*.tmp
+*.temp
+*.swp
+*~
