@@ -42,7 +42,11 @@ dependencies {
 	implementation("org.apache.commons:commons-lang3:3.18.0")        // String/Collection Utils
 	implementation("com.opencsv:opencsv:5.9")                        // Alternative CSV Library
 
-	// Testing
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
+
+    // Testing
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.testcontainers:junit-jupiter")           // Database Testing
 	testImplementation("org.testcontainers:postgresql")              // PostgreSQL Testing
