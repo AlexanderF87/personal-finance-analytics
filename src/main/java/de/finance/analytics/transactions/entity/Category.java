@@ -61,7 +61,6 @@ public class Category {
         this.icon = icon;
     }
 
-    // Helper methods
     public boolean isMainCategory() {
         return parentCategory == null;
     }

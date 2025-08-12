@@ -78,7 +78,6 @@ public class Transaction {
     @Column(name = "raw_data", columnDefinition = "TEXT")
     private String rawData; // Original CSV/PDF line for debugging
 
-    // Banking-specific constructor
     public Transaction(String bankName, LocalDate bookingDate, TransactionType type,
                        BigDecimal amount, String reference, String counterparty) {
         this.bankName = bankName;
@@ -88,11 +87,8 @@ public class Transaction {
         this.reference = reference;
         this.counterparty = counterparty;
         this.importTimestamp = LocalDateTime.now();
-        // state = PENDING is already set in field
-        // currency = "EUR" is already set in field
     }
 
-    // Banking helper methods
     public boolean isExpense() {
         return type == TransactionType.DEBIT && amount.compareTo(BigDecimal.ZERO) < 0;
     }
@@ -105,7 +101,6 @@ public class Transaction {
         return amount.abs();
     }
 
-    // toString for debugging (no @ToString due to JPA relations!)
     @Override
     public String toString() {
         return String.format("Transaction{id=%d, bank='%s', date=%s, amount=%s, reference='%s'}",
