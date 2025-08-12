@@ -15,7 +15,7 @@ This guide helps keep commit messages consistent, clear, and meaningful across t
 **Example:**
 
 ```
-feat: ✨ add search functionality to user list
+feat: 🌟 add search functionality to user list
 
 - Enables fuzzy search
 - Adds debounce for performance
@@ -25,17 +25,17 @@ feat: ✨ add search functionality to user list
 
 ## ✳️ Commit Types
 
-| Type        | Description                                  | Emoji (optional) |
-|-------------|----------------------------------------------|------------------|
-| `feat`      | ✨ New feature                                | ✨               |
-| `fix`       | 🐛 Bug fix                                   | 🐛               |
-| `docs`      | 📝 Documentation changes (README, comments)  | 📝               |
-| `style`     | 💄 Code style (no logic changes)             | 💄               |
-| `refactor`  | ♻️ Code restructuring                        | ♻️               |
-| `test`      | ✅ Adding or changing tests                  | ✅               |
-| `chore`     | 🔧 Maintenance tasks (deps, config, etc.)    | 🔧               |
-| `perf`      | ⚡ Performance improvements                  | ⚡               |
-| `ci`        | 👷 CI/CD related changes                     | 👷               |
+| Type        | Description                                 | Emoji (optional) |
+|-------------|---------------------------------------------|------------------|
+| `feat`      | 🌟 New feature                              | 🌟               |
+| `fix`       | 🐛 Bug fix                                  | 🐛               |
+| `docs`      | 📝 Documentation changes (README, comments) | 📝               |
+| `style`     | 💄 Code style (no logic changes)            | 💄               |
+| `refactor`  | ♻️ Code restructuring                       | ♻️               |
+| `test`      | ✅ Adding or changing tests                  | ✅                |
+| `chore`     | 🔧 Maintenance tasks (deps, config, etc.)   | 🔧               |
+| `perf`      | ⚡ Performance improvements                  | ⚡                |
+| `ci`        | 👷 CI/CD related changes                    | 👷               |
 
 ---
 
@@ -52,7 +52,7 @@ feat: ✨ add search functionality to user list
 ## ✅ Examples
 
 ```
-feat: ✨ add login feature with validation
+feat: 🌟 add login feature with validation
 fix: 🐛 fix null pointer on user creation
 docs: 📝 update API section in README
 refactor: ♻️ simplify permission checking
