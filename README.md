@@ -94,7 +94,7 @@ cp src/main/resources/application.properties.example src/main/resources/applicat
 
 | Format | Status | Description |
 |--------|--------|-------------|
-| CSV | ✅ Ready | Auto-detection for major German banks |
+| CSV | 🔄 In Progress | Auto-detection for major German banks |
 | MT940 | 🔄 In Progress | Standardized SWIFT format |
 | PDF | 🔄 In Progress | Text-based bank statements |
 | CAMT.053 | 📋 Planned | ISO 20022 standard |
@@ -210,13 +210,16 @@ While this is primarily a portfolio project, contributions are welcome! Please f
 
 ## 📋 Roadmap
 
-### Version 1.0 (Current)
-- [x] CSV auto-detection for major banks
-- [x] Basic transaction categorization
-- [x] Interactive dashboard with charts
-- [x] PostgreSQL integration
+### Version 0.9 (Current)
+- [x] Building foundation
 
-### Version 1.1 (In Progress)
+### Version 1.0 (In Progress)
+- [ ] CSV auto-detection for major banks
+- [ ] Basic transaction categorization
+- [ ] Interactive dashboard with charts
+- [ ] PostgreSQL integration
+
+### Version 1.1 (Planned)
 - [ ] MT940 format support
 - [ ] PDF statement parsing
 - [ ] Advanced analytics features
