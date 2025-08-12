@@ -1,0 +1,85 @@
+graph TB
+    subgraph "🏦 BANKING DATA LAYER"
+        CSV[📊 CSV Auto-Detection<br/>Strategy Pattern]
+        PDF[📄 PDF Text Parser<br/>Template Method]
+        MT940[🏛️ MT940 Standard<br/>Builder Pattern]
+        CAMT[📋 CAMT.053 ISO<br/>Future]
+    end
+
+    subgraph "⚙️ IMPORT PIPELINE"
+        Factory[🏭 ImporterFactory<br/>Factory Method]
+        Detector[🔍 BankFormatDetector<br/>Chain of Responsibility]
+        Parser[📝 DataParser<br/>Strategy Pattern]
+        Validator[✅ DataValidator<br/>Command Pattern]
+    end
+
+    subgraph "💾 CORE DOMAIN MODEL"
+        Transaction[💰 Transaction Entity<br/>✅ FERTIG]
+        Category[📂 Category Entity<br/>✅ FERTIG<br/>Composite Pattern]
+        TxState[⚡ TransactionState<br/>✅ FERTIG<br/>State Pattern]
+        TxType[🔄 TransactionType<br/>✅ FERTIG]
+    end
+
+    subgraph "🧠 BUSINESS LOGIC"
+        CategoryService[🎯 CategoryService<br/>❌ TODO<br/>Observer Pattern]
+        Analytics[📈 AnalyticsService<br/>❌ TODO<br/>Template Method]
+        Budget[💳 BudgetService<br/>❌ TODO<br/>Command Pattern]
+    end
+
+    subgraph "📊 DATA VISUALIZATION"
+        Controller[🎮 DashboardController<br/>✅ Basic MVC]
+        Charts[📊 Chart.js Integration<br/>❌ TODO<br/>Decorator Pattern]
+        Reports[📋 ReportGenerator<br/>❌ TODO<br/>Visitor Pattern]
+    end
+
+    subgraph "🗄️ DATA ACCESS"
+        TxRepo[💾 TransactionRepository<br/>❌ TODO<br/>Repository Pattern]
+        CategoryRepo[📁 CategoryRepository<br/>❌ TODO]
+        PostgreSQL[(🐘 PostgreSQL 17<br/>✅ RUNNING)]
+    end
+
+    subgraph "🎯 FAMILY USE CASES"
+        Upload[📤 Bankdaten Upload<br/>❌ TODO]
+        Categorize[🏷️ Auto-Kategorisierung<br/>❌ TODO]
+        Visualize[👁️ Interactive Charts<br/>❌ TODO]
+        Analyze[🔍 Trend Analysis<br/>❌ TODO]
+    end
+
+    %% Data Flow
+    CSV --> Factory
+    PDF --> Factory
+    MT940 --> Factory
+    Factory --> Detector
+    Detector --> Parser
+    Parser --> Validator
+    Validator --> Transaction
+    
+    Transaction --> TxRepo
+    Category --> CategoryRepo
+    TxRepo --> PostgreSQL
+    CategoryRepo --> PostgreSQL
+    
+    TxRepo --> CategoryService
+    TxRepo --> Analytics
+    CategoryService --> Budget
+    
+    Analytics --> Controller
+    Budget --> Controller
+    Controller --> Charts
+    Controller --> Reports
+    
+    Upload --> Factory
+    Categorize --> CategoryService
+    Visualize --> Charts
+    Analyze --> Analytics
+
+    %% Status Colors
+    classDef done fill:#2ECC71,stroke:#27AE60,color:#fff
+    classDef todo fill:#E74C3C,stroke:#C0392B,color:#fff
+    classDef running fill:#3498DB,stroke:#2980B9,color:#fff
+    classDef basic fill:#F39C12,stroke:#E67E22,color:#fff
+
+    class Transaction,Category,TxState,TxType done
+    class PostgreSQL running
+    class Controller basic
+    class CSV,PDF,MT940,Factory,Detector,Parser,Validator,CategoryService,Analytics,Budget,Charts,Reports,TxRepo,CategoryRepo,Upload,Categorize,Visualize,Analyze todo
