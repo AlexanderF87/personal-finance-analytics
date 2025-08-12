@@ -1,202 +1,268 @@
 # Personal Finance Analytics Platform
 
-> **Banking Data Processing & Analytics Engine** - Intelligente Verarbeitung von Multi-Format Bankdaten mit interaktiven Visualisierungen
+> **Multi-Format Banking Data Processing & Analytics Engine** - Intelligent processing of banking data with interactive visualizations and automated transaction categorization
 
 [![Java](https://img.shields.io/badge/Java-24-orange.svg)](https://openjdk.java.net/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.4-green.svg)](https://spring.io/projects/spring-boot)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-blue.svg)](https://www.postgresql.org/)
 [![Gradle](https://img.shields.io/badge/Gradle-8.x-brightgreen.svg)](https://gradle.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🎯 Project Vision
+## 🎯 Overview
 
-**Portfolio-Projekt für Senior Java Developer Position (Banking/Fintech)**
-- Multi-Format Banking Data Import Pipeline (CSV, PDF, MT940, CAMT.053)
-- Intelligente automatische Transaktions-Kategorisierung
-- Interactive Data Visualization Dashboard
-- 15+ Design Patterns in Financial Context
-- Production-Ready: Familie nutzt App mit echten Daten
+A comprehensive **Personal Finance Analytics Platform** that processes real banking data from multiple formats and provides intelligent insights through interactive visualizations. Built as a production-ready application with enterprise-grade patterns and architecture.
 
-## 🏗️ Architecture & Tech Stack
+**Key Highlights:**
+- 📊 Multi-format banking data import (CSV, PDF, MT940, CAMT.053)
+- 🤖 Intelligent automatic transaction categorization
+- 📈 Interactive data visualization dashboard
+- 🏗️ 15+ design patterns implementation
+- 🏦 Real-world banking domain expertise
+- ✅ Production-tested with real family financial data
 
-### Backend (80% Focus)
-```
-Spring Boot 3.5.4 + Banking Data Processing
-├── Multi-Format Import Pipeline
-├── PostgreSQL + Financial Data Schema  
-├── Apache POI (PDF Processing)
-├── Apache Commons CSV (Auto-Detection)
-└── 15+ Design Patterns Implementation
-```
+## ✨ Features
 
-### Frontend (20% Visualization)
-```
-Thymeleaf + Bootstrap + Chart.js
-├── Responsive Dashboard
-├── Interactive Charts (Pie/Bar/Line)
-├── Real-time Analytics
-└── Mobile-Optimized
-```
+### 🏦 Banking Data Processing
+- **Multi-Format Support**: CSV, PDF, MT940, CAMT.053
+- **Auto-Detection**: Automatic bank format recognition for major German banks
+- **Smart Categorization**: AI-powered transaction classification
+- **Data Validation**: Robust error handling and data consistency checks
 
-## 🏦 Banking Data Support
+### 📊 Analytics & Visualization
+- **Interactive Dashboard**: Real-time financial overview
+- **Multiple Chart Types**: Pie, bar, and line charts with Chart.js
+- **Trend Analysis**: Monthly/yearly comparisons and spending patterns
+- **Budget Insights**: Savings potential identification
+- **Anomaly Detection**: Unusual spending pattern alerts
 
-### Supported Formats
-- ✅ **CSV Auto-Detection** (Top 5 German Banks)
-- 🔄 **MT940** (Standardized Banking Format)
-- 🔄 **PDF Text-Parsing** (Known Bank Layouts)
-- 📋 **CAMT.053** (ISO 20022 Standard)
-
-### Auto-Detection Banks
-```java
-SPARKASSE("Auftragskonto", "Buchungstag", "Verwendungszweck", "Betrag")
-VOLKSBANK("Buchungstag", "Auftraggeber/Empfänger", "Vorgang", "Umsatz") 
-DEUTSCHE_BANK("Buchungstag", "Wert", "Begünstigter", "Betrag (EUR)")
-DKB("Buchungsdatum", "Auftraggeber / Begünstigter", "Betrag (EUR)")
-ING("Buchung", "Name Zahlungsbeteiligter", "Betrag")
-```
-
-## 🎨 Design Patterns Showcase
-
-### Data Processing Patterns
-- **Strategy Pattern**: Multi-Format Import Pipeline
-- **Factory Pattern**: Bank Format Detection & Parser Creation
-- **Chain of Responsibility**: Transaction Categorization Pipeline
-- **Command Pattern**: Analysis Commands & Operations
-
-### Visualization Patterns
-- **Abstract Factory**: Chart Creation (Pie/Bar/Line)
-- **Decorator Pattern**: Interactive Chart Enhancement
-- **Observer Pattern**: Real-time Budget Alerts
-
-### Business Logic Patterns
-- **Builder Pattern**: Complex Financial Query Construction
-- **Template Method**: Common Analytics Operations
-- **Facade Pattern**: Simplified Banking API
+### 🎨 Architecture Showcase
+- **Design Patterns**: 15+ patterns including Strategy, Factory, Observer, Chain of Responsibility
+- **Clean Architecture**: SOLID principles with clear separation of concerns
+- **Scalable Design**: Extensible for additional banks and formats
+- **Enterprise Patterns**: Repository, Service, and MVC patterns
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Java 24+
-- PostgreSQL 17+
-- Gradle 8.x
+```bash
+Java 24+
+PostgreSQL 17+
+Gradle 8.x
+```
 
 ### Installation
 ```bash
-# Clone repository
+# Clone the repository
 git clone https://github.com/your-username/personal-finance-analytics.git
 cd personal-finance-analytics
 
-# Setup database (PostgreSQL must be running)
+# Set up database
 createdb finance_analytics
 
-# Run application
+# Configure application properties
+cp src/main/resources/application.properties.example src/main/resources/application.properties
+# Edit database connection settings
+
+# Run the application
 ./gradlew bootRun
 ```
 
-### First Run
-1. Navigate to `http://localhost:8080`
-2. Upload your bank's CSV export
-3. Enjoy automatic categorization & visualizations!
+### First Steps
+1. Open your browser to `http://localhost:8080`
+2. Upload your bank's CSV export file
+3. Explore automatic categorization and visualizations
+4. Set up budget goals and track spending trends
 
-## 📊 Features & Screenshots
+## 🏗️ Tech Stack
 
-### Dashboard Overview
-![Dashboard](docs/images/dashboard.png)
-*Real-time financial overview with category breakdown*
+### Backend (Core Focus)
+- **Spring Boot 3.5.4** - Enterprise Java framework
+- **Java 24** - Latest stable Java version
+- **PostgreSQL 17** - Robust ACID-compliant database
+- **Apache POI 5.x** - PDF processing capabilities
+- **Apache Commons CSV** - CSV parsing with auto-detection
+- **Jackson** - JSON processing extensions
+- **Testcontainers** - Integration testing
 
-### Multi-Format Import
-![Import](docs/images/import-pipeline.png)
-*Automatic bank detection and data processing*
+### Frontend (Visualization)
+- **Thymeleaf** - Server-side templating
+- **Bootstrap 5** - Responsive UI framework
+- **Chart.js 4.x** - Interactive data visualizations
+- **Responsive Design** - Mobile-optimized interface
 
-### Analytics & Trends
-![Analytics](docs/images/analytics.png)
-*Interactive trend analysis and budget insights*
+### Supported Banking Formats
 
-## 🛠️ Development
+| Format | Status | Description |
+|--------|--------|-------------|
+| CSV | ✅ Ready | Auto-detection for major German banks |
+| MT940 | 🔄 In Progress | Standardized SWIFT format |
+| PDF | 🔄 In Progress | Text-based bank statements |
+| CAMT.053 | 📋 Planned | ISO 20022 standard |
 
-### Project Structure
+#### Supported Banks (CSV Auto-Detection)
+- **Sparkasse** - Germany's largest banking group
+- **Volksbank** - Cooperative banking network
+- **Deutsche Bank** - Major commercial bank
+- **DKB** - Direct banking services
+- **ING** - International banking group
+
+## 🎨 Design Patterns Implementation
+
+### Creational Patterns
+- **Factory Method**: Bank data importer creation
+- **Abstract Factory**: Chart generation for different visualizations
+- **Builder Pattern**: Complex financial query construction
+- **Singleton**: Spring-managed service beans
+
+### Structural Patterns
+- **Adapter**: Legacy bank format integration
+- **Facade**: Simplified banking API interface
+- **Decorator**: Enhanced interactive chart features
+- **Composite**: Hierarchical category structures
+
+### Behavioral Patterns
+- **Strategy**: Multi-format import pipeline
+- **Chain of Responsibility**: Transaction categorization pipeline
+- **Command**: Analysis operations and commands
+- **Observer**: Budget alerts and notifications
+- **State**: Transaction processing lifecycle
+- **Template Method**: Common analytics operations
+- **Visitor**: Extensible services without modifying core entities
+
+## 📁 Project Structure
+
 ```
 src/main/java/de/finance/analytics/
-├── FinanceAnalyticsApplication.java
+├── FinanceAnalyticsApplication.java    # Main application entry point
 ├── banking/
-│   ├── importer/     # Multi-format import logic
-│   ├── detector/     # CSV auto-detection
-│   └── parser/       # Bank-specific parsers
+│   ├── importer/                       # Multi-format import logic
+│   ├── detector/                       # Bank format auto-detection
+│   └── parser/                         # Bank-specific data parsers
 ├── transaction/
-│   ├── entity/       # JPA entities
-│   ├── repository/   # Data access layer
-│   └── service/      # Business logic
+│   ├── entity/                         # JPA domain entities
+│   ├── repository/                     # Data access layer
+│   └── service/                        # Business logic services
 ├── analytics/
-│   ├── service/      # Analytics engine
-│   └── patterns/     # Design patterns showcase
-└── web/
-    └── controller/   # REST & MVC controllers
+│   ├── service/                        # Analytics computation engine
+│   └── patterns/                       # Design patterns showcase
+├── web/
+│   └── controller/                     # REST & MVC controllers
+└── config/                             # Application configuration
+
+src/main/resources/
+├── templates/                          # Thymeleaf HTML templates
+├── static/                             # CSS, JS, images
+└── application.properties              # Configuration settings
 ```
 
-### Development Philosophy
-> **"Start Simple, Build Extensible, Iterate Fast"**
+## 🧪 Testing
 
-- MVP-First Approach: Funktionsfähig in Wochen, nicht Monaten
-- Pattern Evolution: Organic growth, avoid over-engineering
-- Real Usage: Familie nutzt App mit echten Daten ab Tag 1
-- Same Data, Different Views: Analytics logic once, visualization flexible
+```bash
+# Run all tests
+./gradlew test
 
-## 📈 MVP Timeline (3 Weeks)
+# Run with coverage report
+./gradlew test jacocoTestReport
 
-### Week 1: Foundation
-- [x] Spring Boot Setup + Banking Package Structure
-- [x] CSV Auto-Detection (Top 5 Banks)
-- [x] Transaction Entity + Database Schema
-- [x] Basic Categorization Logic
-- [x] Thymeleaf Dashboard + Chart.js Pie Chart
-- **Result:** Familie kann echte Bankdaten visualisieren
+# Integration tests with Testcontainers
+./gradlew integrationTest
+```
 
-### Week 2: Enhancement
-- [ ] PDF Text-Parsing (Known Bank Layouts)
-- [ ] Strategy Pattern Implementation
-- [ ] Line Chart für Trends über Zeit
-- [ ] Enhanced Analytics Service
-- **Result:** 2 Formats, 2 Charts, Patterns demonstriert
+## 📊 Usage Examples
 
-### Week 3: Production Polish
-- [ ] MT940 Standard-Import
-- [ ] Bar Chart für Kategorie-Vergleiche
-- [ ] UI Polish + Error Handling
-- [ ] Production-Ready Deployment
-- **Result:** Demo-ready App mit Pattern-Showcase
+### Uploading Bank Data
+```java
+// Example: CSV file upload and processing
+@PostMapping("/upload")
+public String uploadBankData(@RequestParam("file") MultipartFile file) {
+    BankDataImporter importer = importerFactory.createImporter(file);
+    List<Transaction> transactions = importer.importData(file);
+    transactionService.saveAll(transactions);
+    return "redirect:/dashboard";
+}
+```
 
-## 🎯 Business Value
-
-### Family Use Cases
-- **Dashboard:** Einnahmen vs. Ausgaben mit Ersparnis-Rate
-- **Kategorien:** Wohnen, Lebensmittel, Transport, Freizeit
-- **Filter:** Zeitraum, Kategorien, Mindestbetrag
-- **Analytics:** Monats-/Jahresvergleiche, Spar-Potential
-- **Trends:** Ungewöhnliche Ausgaben-Muster erkennen
-
-### Portfolio Impact
-- **Technical:** Multi-format data processing expertise
-- **Business:** Financial domain knowledge demonstration
-- **Patterns:** 15+ design patterns in practical context
-- **Production:** Real-world usage validation
-
-## 🔧 API Documentation
-
-*Coming Soon: Swagger UI integration for REST API exploration*
+### Querying Transactions
+```java
+// Example: Building complex financial queries
+TransactionQuery query = TransactionQuery.builder()
+    .dateRange(startDate, endDate)
+    .categories(Arrays.asList("Groceries", "Transportation"))
+    .minAmount(new BigDecimal("50.00"))
+    .transactionType(TransactionType.DEBIT)
+    .build();
+```
 
 ## 🤝 Contributing
 
-This is a portfolio project, but feedback and suggestions are welcome!
+While this is primarily a portfolio project, contributions are welcome! Please feel free to:
 
-## 📝 License
+1. **Report Issues**: Found a bug? Open an issue with detailed information
+2. **Suggest Features**: Have ideas for new banking formats or features?
+3. **Submit Pull Requests**: Code improvements and new features are appreciated
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+### Development Setup
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📧 Contact
+## 📋 Roadmap
 
-**[Your Name]** - Banking/Fintech Java Developer
-- Portfolio: [your-portfolio.com](https://your-portfolio.com)
-- LinkedIn: [your-linkedin](https://linkedin.com/in/your-profile)
-- Email: your.email@domain.com
+### Version 1.0 (Current)
+- [x] CSV auto-detection for major banks
+- [x] Basic transaction categorization
+- [x] Interactive dashboard with charts
+- [x] PostgreSQL integration
+
+### Version 1.1 (In Progress)
+- [ ] MT940 format support
+- [ ] PDF statement parsing
+- [ ] Advanced analytics features
+- [ ] Budget goal setting
+
+### Version 2.0 (Planned)
+- [ ] CAMT.053 ISO standard support
+- [ ] Machine learning categorization
+- [ ] REST API for external integrations
+- [ ] Mobile application
+
+## ❓ FAQ
+
+**Q: Is my financial data secure?**
+A: Yes, all data is processed locally. The application doesn't send data to external services.
+
+**Q: Which banks are supported?**
+A: Currently supports CSV exports from major German banks. MT940 support is universal.
+
+**Q: Can I add custom categories?**
+A: Yes, the application supports custom category creation and modification.
+
+**Q: Is there an API available?**
+A: REST API documentation is planned for version 1.1.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Spring Boot team for the excellent framework
+- Chart.js community for visualization components
+- PostgreSQL community for the robust database system
+- Banking standards organizations for format specifications
+
+## 📞 Contact
+
+**Project Maintainer**: [Your Name]
+- 💼 LinkedIn: [Your LinkedIn Profile](https://linkedin.com/in/your-profile) (Comming soon ...)
+- 💼 Xing: [Alexander Frömberg](https://www.xing.com/profile/Alexander_Froemberg2/web_profiles)
+- 📧 Email: alexander.froemberg@tu-dortmund.de
+- 🐙 GitHub: [AlexanderF87](https://github.com/AlexanderF87/)
 
 ---
-*Built with ❤️ for the Banking/Fintech community*
+
+⭐ **Star this repository if you found it helpful!** ⭐
+
+*Built with ❤️ for the Banking & Fintech community*
