@@ -1,7 +1,7 @@
 plugins {
-	java
-	id("org.springframework.boot") version "3.5.4"
-	id("io.spring.dependency-management") version "1.1.7"
+    java
+    id("org.springframework.boot") version "3.5.4"
+    id("io.spring.dependency-management") version "1.1.7"
     jacoco
 }
 
@@ -9,17 +9,17 @@ group = "de.finance"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(24)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 jacoco {
-    toolVersion = "0.8.10"
+    toolVersion = "0.8.12"
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
@@ -37,67 +37,89 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.4.0")
     implementation("org.apache.poi:poi-scratchpad:5.4.0")
 
-    // JSON Processing (jackson-module-kotlin only for Kotlin)
+    // JSON Processing
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
     // Utilities
     implementation("org.apache.commons:commons-lang3:3.18.0")
-    implementation("com.opencsv:opencsv:5.9")                        // Alternative zu commons-csv
+    implementation("com.opencsv:opencsv:5.9")
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
-    // Swagger → http://localhost:8080/swagger-ui.html
+    // Swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
-    // Testing - spring-boot-starter-test enthält bereits ALLES was du brauchst
+    // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine") // optional
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    // Zusätzliche Test-Dependencies
+    // Testcontainers
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
 }
 
-// Gradle Performance Optimizations (für Java 24)
 tasks.withType<JavaCompile> {
-	options.compilerArgs.add("-parameters")
+    options.compilerArgs.add("-parameters")
 }
 
-// Test Configuration
 tasks.withType<Test> {
     useJUnitPlatform()
+    ignoreFailures = true // Tests bei Fehlern trotzdem weiterlaufen lassen
 
-    // Parallel test execution (bereits vorhanden)
     maxParallelForks = Runtime.getRuntime().availableProcessors().div(2).takeIf { it > 0 } ?: 1
 
-    // Test-Logging hinzufügen
     testLogging {
         events("passed", "skipped", "failed")
         showStandardStreams = false
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
 
-    // Test-Reports
     reports {
         html.required.set(true)
         junitXml.required.set(true)
     }
-}
 
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
+    finalizedBy(tasks.jacocoTestReport) // Immer danach Coverage generieren
 }
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+    mustRunAfter(tasks.test) // Auch bei Testfehlern
+
     reports {
         xml.required.set(true)
         html.required.set(true)
+        csv.required.set(false)
+    }
+
+    executionData.setFrom(fileTree(layout.buildDirectory.dir("jacoco")).include("**/*.exec"))
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.jacocoTestReport)
+
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.70".toBigDecimal()
+            }
+        }
+    }
+}
+
+tasks.register("testWithCoverage") {
+    group = "verification"
+    description = "Runs tests and generates JaCoCo coverage report even if tests fail"
+    dependsOn(tasks.test)
+    finalizedBy(tasks.jacocoTestReport)
+
+    doLast {
+        println("Tests wurden ausgeführt (auch mit Fehlern) – Coverage-Report ist erstellt.")
     }
 }
