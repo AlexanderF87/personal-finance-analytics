@@ -2,12 +2,14 @@ package de.finance.analytics.transactions.entity;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Entity tests for TransactionType Enum
- * Testing banking-specific transaction-types
+ * Testing banking-specific transaction-types - VERVOLLSTÄNDIGT für 100% Coverage
  */
 @DisplayName("TransactionType Enum Tests")
 class TransactionTypeTest {
@@ -85,5 +87,42 @@ class TransactionTypeTest {
         for (TransactionType type : allTypes) {
             assertThat(type.isExpense() ^ type.isIncome()).isTrue(); // XOR: exactly one is true
         }
+    }
+
+    // 🆕 NEUE TESTS für 100% Coverage
+    @ParameterizedTest
+    @EnumSource(TransactionType.class)
+    @DisplayName("Should test all enum values with parameterized test")
+    void shouldTestAllEnumValuesWithParameterizedTest(TransactionType type) {
+        // When & Then - All values have required properties
+        assertThat(type.getGermanName()).isNotEmpty();
+        assertThat(type.getDisplayName()).isNotEmpty();
+        assertThat(type.name()).isNotEmpty();
+
+        // Either expense or income, never both
+        assertThat(type.isExpense() ^ type.isIncome()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Should handle enum constructor correctly")
+    void shouldHandleEnumConstructorCorrectly() {
+        // When - Create enum instances (constructor coverage)
+        TransactionType debit = TransactionType.valueOf("DEBIT");
+        TransactionType credit = TransactionType.valueOf("CREDIT");
+
+        // Then - Constructor worked correctly
+        assertThat(debit).isEqualTo(TransactionType.DEBIT);
+        assertThat(credit).isEqualTo(TransactionType.CREDIT);
+
+        assertThat(debit.getGermanName()).isEqualTo("Belastung");
+        assertThat(credit.getGermanName()).isEqualTo("Gutschrift");
+    }
+
+    @Test
+    @DisplayName("Should handle enum toString implicitly")
+    void shouldHandleEnumToStringImplicitly() {
+        // When & Then - toString returns enum name by default
+        assertThat(TransactionType.DEBIT.toString()).isEqualTo("DEBIT");
+        assertThat(TransactionType.CREDIT.toString()).isEqualTo("CREDIT");
     }
 }
