@@ -1,0 +1,118 @@
+graph TB
+    subgraph "📦 TESTING LAYER"
+        UnitTests[🧪 Unit Tests<br/>JUnit 5 + Mockito]
+        IntegrationTests[🔗 Integration Tests<br/>Testcontainers + PostgreSQL]
+        E2ETests[🎭 E2E Tests<br/>Spring Boot Test]
+        TestData[📊 Test Data<br/>Banking Fixtures]
+    end
+
+    subgraph "🏦 BANKING DATA LAYER"
+        CSV[📊 CSV Auto-Detection<br/>✅ Strategy Pattern<br/>❌ Implementation TODO]
+        PDF[📄 PDF Text Parser<br/>❌ Template Method TODO]
+        MT940[🏛️ MT940 Standard<br/>❌ Builder Pattern TODO]
+        CAMT[📋 CAMT.053 ISO<br/>🔮 Future Scope]
+    end
+
+    subgraph "⚙️ IMPORT PIPELINE"
+        Factory[🏭 ImporterFactory<br/>❌ Factory Method TODO]
+        Detector[🔍 BankFormatDetector<br/>❌ Chain of Responsibility TODO]
+        Parser[📝 DataParser<br/>❌ Strategy Pattern TODO]
+        Validator[✅ DataValidator<br/>❌ Command Pattern TODO]
+    end
+
+    subgraph "💾 CORE DOMAIN MODEL"
+        Transaction[💰 Transaction Entity<br/>✅ FERTIG - JPA Annotated]
+        Category[📂 Category Entity<br/>✅ FERTIG - Composite Pattern]
+        TxState[⚡ TransactionState<br/>✅ FERTIG - State Enum]
+        TxType[🔄 TransactionType<br/>✅ FERTIG - DEBIT/CREDIT]
+    end
+
+    subgraph "🧠 BUSINESS LOGIC"
+        CategoryService[🎯 CategoryService<br/>❌ Observer Pattern TODO]
+        Analytics[📈 AnalyticsService<br/>❌ Template Method TODO]
+        Budget[💳 BudgetService<br/>❌ Command Pattern TODO]
+    end
+
+    subgraph "🌐 WEB LAYER"
+        Controller[🎮 DashboardController<br/>✅ Basic MVC DONE]
+        UploadController[📤 UploadController<br/>❌ File Upload TODO]
+        RestAPI[🔗 REST API<br/>🔮 Future v1.1]
+        Charts[📊 Chart.js Integration<br/>❌ Decorator Pattern TODO]
+    end
+
+    subgraph "🗄️ DATA ACCESS"
+        TxRepo[💾 TransactionRepository<br/>❌ Repository Pattern TODO]
+        CategoryRepo[📁 CategoryRepository<br/>❌ Repository Pattern TODO]
+        PostgreSQL[(🐘 PostgreSQL 17<br/>✅ RUNNING + Connected)]
+    end
+
+    subgraph "🎯 FAMILY USE CASES"
+        Upload[📤 CSV Upload & Process<br/>❌ Week 1 Sprint Goal]
+        Categorize[🏷️ Auto-Kategorisierung<br/>❌ Week 1 Sprint Goal]
+        Visualize[👁️ Pie Chart Kategories<br/>❌ Week 1 Sprint Goal]
+        Analyze[🔍 Basic Analytics<br/>❌ Week 2 Goal]
+    end
+
+    subgraph "🏗️ INFRASTRUCTURE"
+        SpringBoot[🚀 Spring Boot 3.5.4<br/>✅ RUNNING on :8080]
+        Gradle[⚙️ Gradle Kotlin DSL<br/>✅ Build System Ready]
+        Git[📚 Git Repository<br/>✅ GitHub Synced]
+        Thymeleaf[🎨 Thymeleaf Templates<br/>✅ home.html Ready]
+    end
+
+    %% Data Flow - Main Pipeline
+    CSV --> Factory
+    Factory --> Detector
+    Detector --> Parser
+    Parser --> Validator
+    Validator --> Transaction
+    
+    Transaction --> TxRepo
+    Category --> CategoryRepo
+    TxRepo --> PostgreSQL
+    CategoryRepo --> PostgreSQL
+    
+    %% Business Logic Flow
+    TxRepo --> CategoryService
+    TxRepo --> Analytics
+    CategoryService --> Budget
+    
+    %% Web Layer Flow
+    Analytics --> Controller
+    Budget --> Controller
+    Controller --> Charts
+    UploadController --> Factory
+    
+    %% Use Case Flow
+    Upload --> UploadController
+    Categorize --> CategoryService
+    Visualize --> Charts
+    Analyze --> Analytics
+
+    %% Testing Relations
+    UnitTests --> CategoryService
+    UnitTests --> Analytics
+    IntegrationTests --> TxRepo
+    IntegrationTests --> PostgreSQL
+    E2ETests --> Controller
+    TestData --> UnitTests
+    TestData --> IntegrationTests
+
+    %% Infrastructure Relations
+    SpringBoot --> Controller
+    SpringBoot --> TxRepo
+    Gradle --> SpringBoot
+    Git --> Gradle
+    Thymeleaf --> Controller
+
+    %% Status Colors
+    classDef done fill:#2ECC71,stroke:#27AE60,color:#fff,font-weight:bold
+    classDef todo fill:#E74C3C,stroke:#C0392B,color:#fff,font-weight:bold
+    classDef running fill:#3498DB,stroke:#2980B9,color:#fff,font-weight:bold
+    classDef basic fill:#F39C12,stroke:#E67E22,color:#fff,font-weight:bold
+    classDef future fill:#9B59B6,stroke:#8E44AD,color:#fff,font-weight:bold
+
+    class Transaction,Category,TxState,TxType,Controller,SpringBoot,Gradle,Git,Thymeleaf done
+    class PostgreSQL running
+    class CSV,PDF,MT940,Factory,Detector,Parser,Validator,CategoryService,Analytics,Budget,Charts,TxRepo,CategoryRepo,Upload,Categorize,Visualize,Analyze,UploadController,UnitTests,IntegrationTests,E2ETests,TestData todo
+    class CAMT,RestAPI future

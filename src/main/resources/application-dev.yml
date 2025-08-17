@@ -1,0 +1,52 @@
+# src/main/resources/application-dev.yml
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/finance_analytics
+    username: finance_user
+    password: secure_password_123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          time_zone: Europe/Berlin
+
+  logging:
+    level:
+      de.finance.analytics: DEBUG
+      org.springframework.web: INFO
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+server:
+  port: 8080
+
+banking:
+  import:
+    supported-formats: CSV,PDF,MT940,CAMT053
+    max-batch-size: 1000
+    auto-categorization: true
+
+  analytics:
+    default-currency: EUR
+    date-format: dd.MM.yyyy
+    decimal-places: 2

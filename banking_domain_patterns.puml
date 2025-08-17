@@ -1,0 +1,90 @@
+@startuml
+class Transaction {
+  +Long id
+  +String bankName
+  +LocalDate bookingDate
+  +TransactionType type
+  +BigDecimal amount
+  +String reference
+  +Category category
+  +TransactionState state
+  +isExpense() Boolean
+  +getAbsoluteAmount() BigDecimal
+}
+
+enum TransactionType {
+  DEBIT
+  CREDIT
+  +isExpense() Boolean
+  +isIncome() Boolean
+}
+
+class Category {
+  +Long id
+  +String name
+  +String displayName
+  +String colorHex
+  +Category parentCategory
+  +List subCategories
+  +String keywords
+  +Boolean isExpense
+  +isMainCategory() Boolean
+  +hasSubCategories() Boolean
+}
+
+enum TransactionState {
+  PENDING
+  PROCESSED
+  FAILED
+  CANCELLED
+  +isProcessable() Boolean
+  +isComplete() Boolean
+}
+
+interface TransactionRepository {
+  +findByBankName(String) List
+  +findByDateRange(LocalDate, LocalDate) List
+  +calculateTotalIncome(LocalDate, LocalDate) BigDecimal
+  +findByCategoryIsNull() List
+  +findTopCounterparties() List
+}
+
+interface CategoryRepository {
+  +findAllByIsActiveTrue() List
+  +findByParentCategoryIsNull() List
+  +findByKeywordContaining(String) List
+  +findAllActiveColors() List
+}
+
+class TransactionService {
+  -TransactionRepository transactionRepository
+  -CategoryService categoryService
+  +saveTransaction(Transaction) Transaction
+  +saveAllTransactions(List) List
+  +generateMonthlyReport(YearMonth) MonthlyReport
+  +getDashboardStats() DashboardStats
+  +recategorizeAll() void
+}
+
+class CategoryService {
+  -CategoryRepository categoryRepository
+  +categorizeTransaction(Transaction) Optional
+  +processBatch(List) List
+  -categorizeByKeywords(Transaction) Optional
+  -categorizeByCounterparty(Transaction) Optional
+  -categorizeByAmount(Transaction) Optional
+  +getStatistics() CategoryStatistics
+}
+
+Transaction "1" --> "1" Category : belongs_to
+Transaction "1" --> "1" TransactionType : has_type
+Transaction "1" --> "1" TransactionState : has_state
+Category "1" --> "0..*" Category : parent_child
+TransactionRepository --> Transaction : manages
+CategoryRepository --> Category : manages
+TransactionService --> TransactionRepository : uses
+TransactionService --> CategoryService : uses
+CategoryService --> CategoryRepository : uses
+CategoryService --> TransactionRepository : uses
+
+@enduml

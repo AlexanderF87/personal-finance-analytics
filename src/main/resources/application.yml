@@ -1,0 +1,18 @@
+# src/main/resources/application.yml
+
+spring:
+  application:
+    name: personal-finance-analytics
+
+  profiles:
+    active: dev
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always

@@ -1,0 +1,79 @@
+graph TB
+    subgraph "🧪 TESTING PYRAMID"
+        UnitTests[🔬 Unit Tests<br/>@Test + @MockBean<br/>Fast, Isolated]
+        IntegrationTests[🔗 Integration Tests<br/>@SpringBootTest + Testcontainers<br/>Real Database]
+        E2ETests[🎭 End-to-End Tests<br/>@AutoConfigureTestDatabase<br/>Complete Workflows]
+    end
+
+    subgraph "🐳 TESTCONTAINERS SETUP"
+        PostgreSQLContainer[🐘 PostgreSQL Container<br/>Real Database Instance<br/>Isolated per Test Class]
+        TestData[📊 Banking Test Fixtures<br/>Realistic CSV/Transaction Data<br/>German Bank Formats]
+        DatabaseSchema[🗄️ Auto-Generated Schema<br/>Hibernate DDL-Auto<br/>Clean State per Test]
+    end
+
+    subgraph "⚙️ GRADLE KOTLIN DSL"
+        TestDependencies[📦 Test Dependencies<br/>testImplementation<br/>JUnit 5 + Testcontainers]
+        TestTasks[🔧 Gradle Test Tasks<br/>./gradlew test<br/>./gradlew integrationTest]
+        TestReports[📊 Test Reports<br/>JaCoCo Coverage<br/>HTML + XML Output]
+    end
+
+    subgraph "🏦 BANKING TEST SCENARIOS"
+        CSVImportTests[📄 CSV Import Tests<br/>Sparkasse, DKB, ING Formats<br/>Auto-Detection Validation]
+        CategorizationTests[🎯 Categorization Tests<br/>Keyword Matching<br/>Chain of Responsibility]
+        AnalyticsTests[📈 Analytics Tests<br/>Monthly Reports<br/>Financial Calculations]
+        RepositoryTests[💾 Repository Tests<br/>Custom Queries<br/>Banking-specific Finders]
+    end
+
+    subgraph "🎮 TEST CONFIGURATION"
+        TestApplication[🚀 @TestConfiguration<br/>Test-specific Beans<br/>Mock Services]
+        TestProfiles[🔧 application-test.yml<br/>Test Database Config<br/>Logging Configuration]
+        TestSlices[🍰 @DataJpaTest<br/>@WebMvcTest<br/>Isolated Layer Testing]
+    end
+
+    %% Flow Relationships
+    UnitTests --> TestApplication
+    IntegrationTests --> PostgreSQLContainer
+    E2ETests --> DatabaseSchema
+    
+    PostgreSQLContainer --> TestData
+    TestData --> CSVImportTests
+    TestData --> CategorizationTests
+    
+    TestDependencies --> UnitTests
+    TestDependencies --> IntegrationTests
+    TestDependencies --> E2ETests
+    
+    TestTasks --> TestReports
+    TestReports --> TestDependencies
+    
+    CSVImportTests --> RepositoryTests
+    CategorizationTests --> AnalyticsTests
+    
+    TestSlices --> TestProfiles
+    TestProfiles --> TestApplication
+
+    %% Docker Integration Note
+    PostgreSQLContainer -.->|"Docker Runtime"| TestData
+    
+    %% Pattern Implementation
+    CSVImportTests -.->|"Strategy Pattern"| CategorizationTests
+    CategorizationTests -.->|"Chain of Responsibility"| AnalyticsTests
+    RepositoryTests -.->|"Repository Pattern"| AnalyticsTests
+
+    %% Test Coverage Flow
+    UnitTests -.->|"~80% Coverage"| TestReports
+    IntegrationTests -.->|"~60% Coverage"| TestReports
+    E2ETests -.->|"~40% Coverage"| TestReports
+
+    %% Styling
+    classDef testLayer fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef containerLayer fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef gradleLayer fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef bankingLayer fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef configLayer fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+
+    class UnitTests,IntegrationTests,E2ETests testLayer
+    class PostgreSQLContainer,TestData,DatabaseSchema containerLayer
+    class TestDependencies,TestTasks,TestReports gradleLayer
+    class CSVImportTests,CategorizationTests,AnalyticsTests,RepositoryTests bankingLayer
+    class TestApplication,TestProfiles,TestSlices configLayer

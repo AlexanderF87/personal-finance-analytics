@@ -1,5 +1,6 @@
 package de.finance.analytics.transactions.repository;
 
+import de.finance.analytics.transactions.entity.Category;
 import de.finance.analytics.transactions.entity.Transaction;
 import de.finance.analytics.transactions.entity.TransactionState;
 import de.finance.analytics.transactions.entity.TransactionType;
@@ -74,4 +75,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "GROUP BY t.counterparty " +
             "ORDER BY transactionCount DESC")
     List<Object[]> findTopCounterpartiesByTransactionCount();
+
+    // In TransactionRepository.java hinzufügen:
+    @Query("SELECT COUNT(t) FROM Transaction t WHERE t.category = :category")
+    long countByCategory(@Param("category") Category category);
+
+    @Query("SELECT COUNT(t) FROM Transaction t WHERE t.category IS NULL")
+    long countByCategoryIsNull();
+
+    List<Transaction> findByType(TransactionType type);
 }

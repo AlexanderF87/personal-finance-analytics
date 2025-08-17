@@ -1,0 +1,15 @@
+# src/main/resources/application-docker.yml
+
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/finance_analytics
+    username: finance_user
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate

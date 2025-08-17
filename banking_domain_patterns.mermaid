@@ -1,0 +1,110 @@
+classDiagram
+    class Transaction {
+        +Long id
+        +String bankName
+        +LocalDate bookingDate
+        +TransactionType type
+        +BigDecimal amount
+        +String reference
+        +Category category
+        +TransactionState state
+        +isExpense() Boolean
+        +getAbsoluteAmount() BigDecimal
+    }
+
+    class Category {
+        +Long id
+        +String name
+        +String displayName
+        +String colorHex
+        +Category parentCategory
+        +List subCategories
+        +String keywords
+        +Boolean isExpense
+        +isMainCategory() Boolean
+        +hasSubCategories() Boolean
+    }
+
+    class TransactionType {
+        <<enumeration>>
+        DEBIT
+        CREDIT
+        +isExpense() Boolean
+        +isIncome() Boolean
+    }
+
+    class TransactionState {
+        <<enumeration>>
+        PENDING
+        PROCESSED
+        FAILED
+        CANCELLED
+        +isProcessable() Boolean
+        +isComplete() Boolean
+    }
+
+    class TransactionRepository {
+        <<interface>>
+        +findByBankName(String) List
+        +findByDateRange(LocalDate, LocalDate) List
+        +calculateTotalIncome(LocalDate, LocalDate) BigDecimal
+        +findByCategoryIsNull() List
+        +findTopCounterparties() List
+    }
+
+    class CategoryRepository {
+        <<interface>>
+        +findAllByIsActiveTrue() List
+        +findByParentCategoryIsNull() List
+        +findByKeywordContaining(String) List
+        +findAllActiveColors() List
+    }
+
+    class TransactionService {
+        <<Service>>
+        -TransactionRepository transactionRepository
+        -CategoryService categoryService
+        +saveTransaction(Transaction) Transaction
+        +saveAllTransactions(List) List
+        +generateMonthlyReport(YearMonth) MonthlyReport
+        +getDashboardStats() DashboardStats
+        +recategorizeAll() void
+    }
+
+    class CategoryService {
+        <<Service>>
+        -CategoryRepository categoryRepository
+        +categorizeTransaction(Transaction) Optional
+        +processBatch(List) List
+        -categorizeByKeywords(Transaction) Optional
+        -categorizeByCounterparty(Transaction) Optional
+        -categorizeByAmount(Transaction) Optional
+        +getStatistics() CategoryStatistics
+    }
+
+    Transaction --o Category : belongs_to
+    Transaction -- TransactionType : has_type
+    Transaction -- TransactionState : has_state
+    Category --o Category : parent_child
+    
+    TransactionRepository ..> Transaction : manages
+    CategoryRepository ..> Category : manages
+    
+    TransactionService --> TransactionRepository : uses
+    TransactionService --> CategoryService : uses
+    CategoryService --> CategoryRepository : uses
+    CategoryService --> TransactionRepository : uses
+
+    class Transaction:::entityClass
+    class Category:::entityClass
+    class TransactionService:::serviceClass
+    class CategoryService:::serviceClass
+    class TransactionRepository:::repoClass
+    class CategoryRepository:::repoClass
+    class TransactionType:::enumClass
+    class TransactionState:::enumClass
+
+    %% classDef entityClass fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    %% classDef serviceClass fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    %% classDef repoClass fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    %% classDef enumClass fill:#fff3e0,stroke:#f57c00,stroke-width:2px
