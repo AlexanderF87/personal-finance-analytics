@@ -1,0 +1,64 @@
+# 🐳 .dockerignore - Personal Finance Analytics
+# Optimiert Docker Build Performance und Image-Größe
+
+# Git
+.git
+.gitignore
+.gitattributes
+README.md
+*.md
+
+# Build outputs
+build/
+target/
+.gradle/
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Development
+.env
+.env.local
+.env.development
+application-local.yml
+application-dev.yml
+
+# Banking data (sicherheitsrelevant!)
+data/imports/
+data/exports/
+data/real/
+*.csv
+*.pdf
+*.mt940
+*.camt
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*~

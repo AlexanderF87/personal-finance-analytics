@@ -1,0 +1,76 @@
+# 🐳 Docker Compose - Personal Finance Analytics Platform
+# Production-ready banking development environment
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database - Banking Data Storage
+  postgres:
+    image: postgres:17-alpine
+    container_name: finance-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: finance_analytics
+      POSTGRES_USER: finance_user
+      POSTGRES_PASSWORD: secure_password_123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+      # Banking-optimized settings
+      POSTGRES_SHARED_PRELOAD_LIBRARIES: pg_stat_statements
+      POSTGRES_LOG_STATEMENT: mod  # Log modifications for audit
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # Auto-initialize database with your banking schema
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+      # Persistent data storage
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - finance-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U finance_user -d finance_analytics"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    # Security: Run as non-root
+    user: postgres
+
+  # pgAdmin - Database Management UI
+  pgadmin:
+    image: dpage/pgadmin4:9.7
+    container_name: finance-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@finance.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "${PGADMIN_PORT:-8081}:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      # Pre-configure database connection
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json:ro
+    networks:
+      - finance-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - pgadmin
+      - full-stack
+
+# Named volumes for data persistence
+volumes:
+  postgres_data:
+    driver: local
+    name: finance_postgres_data
+  pgadmin_data:
+    driver: local
+    name: finance_pgadmin_data
+
+# Custom network for service communication
+networks:
+  finance-network:
+    driver: bridge
+    name: finance-network

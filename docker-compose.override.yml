@@ -1,0 +1,47 @@
+# 🔧 Docker Compose Override - Development Environment
+# Diese Datei wird automatisch von docker-compose geladen
+
+version: '3.8'
+
+services:
+  postgres:
+    # Development-optimierte Einstellungen
+    environment:
+      # Mehr Logging für Development
+      POSTGRES_LOG_STATEMENT: all
+      POSTGRES_LOG_MIN_DURATION_STATEMENT: 100ms
+    # Port-Mapping für lokale Entwicklung
+    ports:
+      - "5432:5432"
+    # Development Volumes - Hot Reload für SQL Scripts
+    volumes:
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+      - postgres_dev_data:/var/lib/postgresql/data
+    # Development: Erlaube Connections von überall
+    command: >
+      postgres
+      -c log_statement=all
+      -c log_destination=stderr
+      -c log_min_duration_statement=100ms
+      -c shared_preload_libraries=pg_stat_statements
+      -c track_activity_query_size=2048
+
+  pgadmin:
+    # Immer verfügbar in Development
+    profiles: []  # Überschreibt profiles aus main file
+    # Development Port
+    ports:
+      - "8081:80"
+    # Development: Gültige E-Mail Adresse verwenden
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@finance-analytics.com
+      PGADMIN_DEFAULT_PASSWORD: dev123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+      PGLADMIN_CONFIG_LOGIN_BANNER: 'Finance Analytics - Development Environment'
+
+volumes:
+  # Development-spezifische Volumes
+  postgres_dev_data:
+    driver: local
+    name: finance_postgres_dev_data

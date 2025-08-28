@@ -1,0 +1,16 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Finance Analytics - Local",
+      "Group": "Banking Development",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "finance_analytics",
+      "Username": "finance_user",
+      "SSLMode": "prefer",
+      "Comment": "Personal Finance Analytics Platform - Local Development Database",
+      "DBRestriction": "finance_analytics",
+      "PassFile": "/tmp/pgpass"
+    }
+  }
+}

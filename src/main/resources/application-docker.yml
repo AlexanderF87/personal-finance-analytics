@@ -1,15 +1,101 @@
-# src/main/resources/application-docker.yml
+# 🐳 Spring Boot Configuration - Docker Environment
+# Optimiert für Container-Deployment
 
 spring:
-  config:
-    activate:
-      on-profile: docker
-
+  application:
+    name: Personal Finance Analytics
+  
+  # Database Configuration - Docker Container
   datasource:
-    url: jdbc:postgresql://postgres:5432/finance_analytics
+    url: jdbc:postgresql://localhost:5432/finance_analytics
     username: finance_user
-    password: ${POSTGRES_PASSWORD}
+    password: secure_password_123
+    driver-class-name: org.postgresql.Driver
+    
+    # HikariCP Pool Configuration (Banking Performance)
+    hikari:
+      pool-name: FinanceHikariCP
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      validation-timeout: 5000
+      leak-detection-threshold: 60000
 
+  # JPA Configuration
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: validate  # WICHTIG: validate instead of update in Docker!
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.SnakeCasePhysicalNamingStrategy
+    show-sql: false  # Logging in Docker optimized
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        generate_statistics: false
+        jdbc:
+          batch_size: 25
+        order_inserts: true
+        order_updates: true
+
+  # Caching Configuration
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=300s
+
+# Actuator Configuration (Monitoring)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+
+# Logging Configuration (Docker-optimized)
+logging:
+  level:
+    root: INFO
+    de.finance.analytics: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    com.zaxxer.hikari: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  tomcat:
+    max-threads: 200
+    min-spare-threads: 10
+    max-connections: 8192
+    accept-count: 100
+    connection-timeout: 20000
+
+# Banking Application Configuration
+finance:
+  analytics:
+    import:
+      directory: /app/data/imports
+      archive-directory: /app/data/imports/processed
+      max-file-size: 10MB
+      allowed-formats: CSV,PDF,MT940
+    export:
+      directory: /app/data/exports
+    categories:
+      auto-categorization: true
+      confidence-threshold: 0.75
+    security:
+      upload-scan: true
